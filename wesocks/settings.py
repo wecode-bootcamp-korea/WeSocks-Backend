@@ -145,3 +145,13 @@ CORS_ALLOW_HEADERS = (
   'x-csrftoken',
   'x-requested-with',
 )
+
+ALLOWED_HOSTS = [
+    '*',
+    'localhost:8000',
+    '10.58.3.239:8000',
+    '10.58.3.239',
+    '127.0.0.1',
+    '10.58.1.157',
+    '10.58.1.157:8000'
+]
