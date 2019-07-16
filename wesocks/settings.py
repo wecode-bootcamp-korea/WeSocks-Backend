@@ -27,6 +27,9 @@ SECRET_KEY = 'ma+yn7^8mh*1g2+g4(f1pt2s0fx=b5^kpzbq*bo3)jk@^tru=u'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+BCRYPT_ROUNDS = 15
+APPEND_SLASH  = False 
+JWT_ALGORITHM = 'HS256'
 
 
 # Application definition
@@ -99,7 +102,18 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+    
 ]
+
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.SHA1PasswordHasher',
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+    'django.contrib.auth.hashers.CryptPasswordHasher',
+    )
 
 
 # Internationalization
