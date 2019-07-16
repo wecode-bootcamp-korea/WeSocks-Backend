@@ -23,12 +23,19 @@ class SocksType(models.Model):
     class Meta:
         db_table = "sock_type"
 
-class PatternDescription(models.Model):
+class PatternType(models.Model):
     title = models.CharField(max_length = 50)
     # 1: none
     # 2: strip
     # 3: image
-    # 4: described by object
+    # 4: object
+
+    class Meta:
+        db_table = "pattern_type"
+
+class PatternDescription(models.Model):
+    label = models.CharField(max_length = 300, blank = True, null = True)
+    pattern_type = models.ForeignKey(PatternType, on_delete = models.CASCADE, default = 1)
     detail_option = models.CharField(max_length = 300, blank = True, null = True)
     # null / strip type / image url / object
 
@@ -36,20 +43,29 @@ class PatternDescription(models.Model):
     class Meta:
         db_table = "pattern_des"
 
-class LogoDescription(models.Model):
+class LogoType(models.Model):
     title = models.CharField(max_length = 50)
     # 1: none
-    # 2: logo_image
-    # 3: described by object
+    # 2: image
+    # 3: object
+
+    class Meta:
+        db_table = "logo_type"
+
+class LogoDescription(models.Model):
+    label = models.CharField(max_length = 300, blank = True, null = True)
+    logo_type = models.ForeignKey(LogoType, on_delete=models.CASCADE, default = 1)
     detail_option = models.CharField(max_length = 300, blank = True, null = True)
     # null / image url / object
 
     class Meta:
         db_table = "logo_des"
 
-class ProductDescription(models.Model):
+
+class DesignDescription(models.Model):
+    label       = models.CharField(max_length = 50, blank = True, null = True)
     category    = models.ForeignKey(SocksCategory, on_delete = models.CASCADE, default=5)
-    main_type  = models.ForeignKey(SocksType, on_delete = models.CASCADE, default=5)
+    main_type   = models.ForeignKey(SocksType, on_delete = models.CASCADE, default=5)
     color       = models.CharField(max_length=10, default='ffffff')
     pattern     = models.ForeignKey(PatternDescription, on_delete = models.CASCADE, default=1)
     logo        = models.ForeignKey(LogoDescription, on_delete = models.CASCADE, default=1)
@@ -59,4 +75,4 @@ class ProductDescription(models.Model):
     updated_at  = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = "product_des"
+        db_table = "design_des"
