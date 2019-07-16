@@ -4,9 +4,15 @@ from datetime import datetime
 from django.utils.dateformat import DateFormat
 from urllib import parse
 import json
-
-from .models import SocksCategory, SocksType, PatternType, PatternDescription, LogoType, LogoDescription, DesignDescription
-
+from .models import (
+    SocksCategory,
+    SocksType,
+    PatternType,
+    PatternDescription,
+    LogoType,
+    LogoDescription,
+    DesignDescription
+)
 
 def product_test(request):
     return HttpResponse("<h1>테스트</h1>")
@@ -16,7 +22,6 @@ class NewDesignView(View):
     def post(self, request):
 
         new_design      = json.loads(request.body)
-        print(new_design)
         new_design_data = DesignDescription.objects.create(
             label       = new_design["label"],
             category_id = new_design["category"],
