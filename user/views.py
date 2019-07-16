@@ -32,7 +32,7 @@ class UserView(View):
 
             new_user.save()
 
-            return JsonResponse({"message" : "Thanks your account has been successfully created."}, status=200)
+            return JsonResponse(status=200)
 
 class LoginView(View):
     def post(self, request):
@@ -50,8 +50,6 @@ class LoginView(View):
 
             return JsonResponse({
                 'access_token'   : encoded_jwt.decode('UTF-8'),
-                'user_nickname'  : user.nickname,
-                'user_pk'        : user.email
             }, status = 200)
         else:
             return JsonResponse({ "error_code": "INVALID_PASSWORD"}, status = 400)
