@@ -7,7 +7,7 @@ from .models import *
 
 class UserTest(TestCase):
 
-    def test_update_address(self):
+    def test_change_address(self):
         c = Client()
 
         UserType.objects.create(
@@ -82,3 +82,4 @@ class UserTest(TestCase):
 
         self.assertEqual = (response.status_code, 200)
         self.assertEqual = (response.json(), {"address_list": test_address})
+
