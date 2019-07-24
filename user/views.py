@@ -6,9 +6,9 @@ import requests
 from django.shortcuts     import render
 from django.http          import JsonResponse, HttpResponse
 from django.views         import View
-from .models              import User
+from .models              import User, Address, AddressType
 from my_settings          import jwt_key
-from wesocks.settings import JWT_ALGORITHM
+from wesocks.settings     import JWT_ALGORITHM
 
 class UserView(View):
     def post(self, request):
@@ -32,7 +32,7 @@ class UserView(View):
 
             new_user.save()
 
-            return JsonResponse(status=200)
+            return HttpResponse(status=200)
 
 class LoginView(View):
     def post(self, request):
@@ -53,3 +53,31 @@ class LoginView(View):
             }, status = 200)
         else:
             return JsonResponse({ "error_code": "INVALID_PASSWORD"}, status = 400)
+
+class ChangeAddressView(View):
+    def post(self, request):
+        #user_who_requested = request.user.id 
+        #login decorator 완성 후 comment 해제 예정
+        
+        new_address_info    = json.loads(request.body)
+        user_who_requested  = new_address_info["id"]
+        user_object         = User.objects.get(pk = user_who_requested)
+        address_type_object = AddressType.objects.get(pk = new_address_info["address_type"])
+        address_to_check    = Address.objects.filter(user = user_object, address_type = address_type_object)
+        
+        if address_to_check.exists():
+            address_to_check.update(address = new_address_info["address"])
+
+            return HttpResponse(status=200)
+
+        new_address = Address(
+            user         = user_object, 
+            address_type = address_type_object, 
+            address      = new_address_info["address"],
+            recepient    = new_address_info["recepient"]
+        )
+
+        new_address.save()
+        
+        return HttpResponse(status=200)
+
