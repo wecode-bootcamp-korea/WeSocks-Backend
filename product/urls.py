@@ -1,8 +1,12 @@
 from django.urls import path
 from . import views
-from .views import product_test, NewDesignView
+from .views import *
 
 urlpatterns = [
-        path('/test',views.product_test),
         path('/new_design', NewDesignView.as_view()),
-        ]
+        path('/wish_req', WishesReqView.as_view()),
+        path('/add_cart_req', AddCartReqView.as_view()),
+        path('/cancel_wish_req', CancelWishReqView.as_view()),
+        path('/cancel_cart_req', CancelCartReqView.as_view()),
+        path('/change_cart_req', ChangeCartReqView.as_view()),
+]
