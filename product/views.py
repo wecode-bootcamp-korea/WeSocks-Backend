@@ -13,22 +13,16 @@ from cart.models import *
 THUMBNAIL_DEFAULT_NUM = 3
 
 def check_design_existence(design_des_dict):
+    text_data = f"{design_des_dict['category_id']}{design_des_dict['main_type_id']}{design_des_dict['color']}{design_des_dict['pattern_type_id']}{design_des_dict['pattern_size']}{design_des_dict['logo_type_id']}{design_des_dict['logo_size']}{design_des_dict['logo_x_coordinate']}{design_des_dict['logo_y_coordinate']}"
+    
+    hashed_data = hash(text_data)
+    
     design_descritpion_exists = DesignDescription.objects.filter(
-        category  = SocksCategory.objects.get(id = design_des_dict["category_id"]),
-        main_type = SocksType.objects.get(id = design_des_dict["main_type_id"]),
-        color     = design_des_dict["color"],
-        pattern   = PatternDescription.objects.get(id = design_des_dict["pattern_id"]),
-        logo      = LogoDescription.objects.get(id = design_des_dict["logo_id"]),
+        hash_value = hashed_data    
     ).exists()
 
     if design_descritpion_exists:
-        existed_design = DesignDescription.objects.get(                    
-            category  = SocksCategory.objects.get(id = design_des_dict["category_id"]),
-            main_type = SocksType.objects.get(id = design_des_dict["main_type_id"]),
-            color     = design_des_dict["color"],
-            pattern   = PatternDescription.objects.get(id = design_des_dict["pattern_id"]),
-            logo      = LogoDescription.objects.get(id = design_des_dict["logo_id"]),
-        )
+        existed_design = DesignDescription.objects.get(hash_value = hashed_data)
 
         return ({
             "check_design_exists" : design_descritpion_exists,
@@ -36,16 +30,29 @@ def check_design_existence(design_des_dict):
         })
 
     else:
+        new_pattern = PatternDescription.objects.create(
+            pattern_type  = PatternType.objects.get(id = design_des_dict["pattern_type_id"]),
+            pattern_size  = design_des_dict["pattern_size"],
+        )
+        new_logo = LogoDescription.objects.create(
+            logo_type     = LogoType.objects.get(id = design_des_dict["logo_type_id"]),
+            logo_size     = design_des_dict["logo_size"],
+            x_coordinate  = design_des_dict["logo_x_coordinate"],
+            y_coordinate  = design_des_dict["logo_y_coordinate"],
+        )
         new_design_created  = DesignDescription.objects.create(
             category   = SocksCategory.objects.get(id = design_des_dict["category_id"]),
             main_type  = SocksType.objects.get(id = design_des_dict["main_type_id"]),
             label      = design_des_dict["label"],
             color      = design_des_dict["color"],
-            pattern    = PatternDescription.objects.get(id = design_des_dict["pattern_id"]),
-            logo       = LogoDescription.objects.get(id = design_des_dict["logo_id"]),
+            pattern    = new_pattern,
+            logo       = new_logo,
             user       = User.objects.get(id = design_des_dict["user_pk"]),
             unit_price = design_des_dict["unit_price"]
         )
+        hashed_data = hash(new_design_created)
+        new_design_created.hash_value = hashed_data
+        new_design_created.save()
 
         return ({
             "check_design_exists" : design_descritpion_exists,
