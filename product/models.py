@@ -26,10 +26,22 @@ class SocksType(models.Model):
 
 class PatternType(models.Model):
     title = models.CharField(max_length = 50)
-    # 1: none
-    # 2: strip
-    # 3: image
-    # 4: object
+    #  1: none
+    #  2: Argyle
+    #  3: bear
+    #  4: bird
+    #  5: block
+    #  6: color_block
+    #  7: crown
+    #  8: dotted
+    #  9: flower
+    # 10: heart
+    # 11: raindrop
+    # 12: stripe
+    # 13: tree
+    # 14: money
+    # 15: tape
+    # 16: hive
 
     class Meta:
         db_table = "pattern_type"
@@ -37,7 +49,7 @@ class PatternType(models.Model):
 class PatternDescription(models.Model):
     label         = models.CharField(max_length = 300, blank = True, null = True)
     pattern_type  = models.ForeignKey(PatternType, on_delete = models.CASCADE, default = 1)
-    pattern_size  = models.IntegerField(default = 200)
+    pattern_size  = models.IntegerField(default = 2, null = True, blank = True)
     detail_option = models.TextField(max_length = 1500, blank = True, null = True)
     # null / strip type / image url / object
 
@@ -47,8 +59,11 @@ class PatternDescription(models.Model):
 class LogoType(models.Model):
     title = models.CharField(max_length = 50)
     # 1: none
-    # 2: image
-    # 3: object
+    # 2: music
+    # 3: moon
+    # 4: nike
+    # 5: mirror
+    # 6: plus
 
     class Meta:
         db_table = "logo_type"
@@ -56,6 +71,9 @@ class LogoType(models.Model):
 class LogoDescription(models.Model):
     label         = models.CharField(max_length = 300, blank = True, null = True)
     logo_type     = models.ForeignKey(LogoType, on_delete=models.CASCADE, default = 1)
+    logo_size     = models.IntegerField(default = 2, null = True, blank = True)
+    x_coordinate  = models.IntegerField(default = 100, null = True, blank = True)
+    y_coordinate  = models.IntegerField(default = 100, null = True, blank = True)
     detail_option = models.TextField(max_length = 1500, blank = True, null = True)
     # null / image url / object
 

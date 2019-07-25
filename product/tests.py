@@ -65,7 +65,7 @@ class ProductAppTest(TestCase):
             logo        = s_logo_des,
             color       = "#bbbbbb",
             user        = tester2,
-            unit_price  = "9000", 
+            unit_price  = 9000, 
             other_req   = "Born again."
         )
         design2.save()
@@ -100,7 +100,7 @@ class ProductAppTest(TestCase):
             "pattern_id"    : "1",
             "logo_id"       : "1",
             "other_req"     : "Born again",
-            "unit_price"    : "10000"
+            "unit_price"    : 10000
         }   
         response = c.post(
             "/product/new_design", 
@@ -125,7 +125,7 @@ class ProductAppTest(TestCase):
                     "user": 1,
                     "wished_num": 0,
                     "sales_volume": 0,
-                    "unit_price": "10000"
+                    "unit_price": 10000
                 },
                 "pattern_type": "none",
                 "logo_type": "none"
@@ -247,3 +247,36 @@ class ProductAppTest(TestCase):
                 "result_message": "cart_changed"
             }
         )
+    
+    def test_most_wish(self):
+        c = Client()
+        test = {
+	        "main_type" : "1",
+        }
+        response = c.post(
+            "/product/most_wished", 
+            json.dumps(test), 
+            content_type = "application/json"
+        )
+        most_wished_products = list(
+            DesignDescription.objects.filter(
+                main_type_id = 1
+            ).order_by("-wished_num").values()[:3])
+        print("여기를 찍어요")
+        print(response.json())
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),[{
+                'label': 'test_design1', 
+                'category_id': 1, 
+                'main_type_id': 1, 
+                'color': '#aaaaaa', 
+                'pattern_id': 1, 
+                'logo_id': 1, 
+                'photo_url': None, 
+                'other_req': 'Born again.', 
+                'user_id': 1, 'wished_num': 1, 
+                'sales_volume': 0, 
+                'unit_price': '8000.00'
+            }]        )
+    
