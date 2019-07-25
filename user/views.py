@@ -154,3 +154,19 @@ class NaverLoginView(View):
                 'user_type'    : none_member_type,
                 'user_pk'      : new_user_info.id,
                 }, status = 200)
+
+class MypageView(View):
+    
+    @login_required
+    def get(self, request):
+        
+        user_who_requested  = request.user.id
+        user_object         = User.objects.values().get(pk = user_who_requested)
+        requested_address = Address.objects.values().filter(pk = user_who_requested)
+
+
+        return JsonResponse({
+            'nickname' : user_object["nickname"],
+            'reward_point' : user_object["reward_points"],
+            "address_list" : list(requested_address)
+        }, status=200)
