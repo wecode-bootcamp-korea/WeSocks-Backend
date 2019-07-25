@@ -9,4 +9,5 @@ urlpatterns = [
         path('/cancel_wish_req', CancelWishReqView.as_view()),
         path('/cancel_cart_req', CancelCartReqView.as_view()),
         path('/change_cart_req', ChangeCartReqView.as_view()),
+        path('/most_wished', MostWishedProductView.as_view()),
 ]
