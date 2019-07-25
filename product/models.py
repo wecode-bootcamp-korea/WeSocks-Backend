@@ -93,8 +93,13 @@ class DesignDescription(models.Model):
     wished_num   = models.IntegerField(default = 0)
     sales_volume = models.IntegerField(default = 0)
     unit_price   = models.DecimalField(blank = True, null = True, max_digits = 10, decimal_places = 2)
+    hash_value   = models.CharField(max_length=256, null=False)
     created_at   = models.DateTimeField(auto_now_add = True)
     updated_at   = models.DateTimeField(auto_now = True)
 
+    def __hash__(self):
+        text = f"{self.category.id}{self.main_type.id}{self.color}{self.pattern.pattern_type_id}{self.pattern.pattern_size}{self.logo.logo_type_id}{self.logo.logo_size}{self.logo.x_coordinate}{self.logo.y_coordinate}"
+        return hash(text)
+        
     class Meta:
         db_table = "design_des"
