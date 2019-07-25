@@ -21,7 +21,7 @@ class ProductAppTest(TestCase):
             nickname     = "tester1",
             password     = "1234",
             phone_number = "163",
-            birthday     = "00001225",
+            birthday     = "20190725",
             user_type    = model_type,
         )  
         tester2 = User.objects.create(
@@ -30,7 +30,7 @@ class ProductAppTest(TestCase):
             nickname     = "tester2",
             password     = "1234",
             phone_number = "163",
-            birthday     = "00001225",
+            birthday     = "20190725",
             user_type    = model_type,
         )  
         # 양말 디자인 data 생성
