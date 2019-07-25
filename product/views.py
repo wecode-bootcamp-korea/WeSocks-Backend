@@ -262,3 +262,55 @@ class MostWishedProductView(View):
                 )[:post_num])
         
         return JsonResponse(most_wished_products, safe = False)
+
+class MostWishedProductView(View):
+
+    def post(self, request):
+        post_num = int(request.GET.get('num', THUMBNAIL_DEFAULT_NUM))
+        
+        most_wished_list_req = json.loads(request.body)
+        most_wished_products = list(
+            DesignDescription.objects.filter(
+                main_type_id = most_wished_list_req["main_type"]
+                ).order_by("-wished_num").values(
+                    'label', 
+                    'category_id',
+                    'main_type_id',
+                    'color',
+                    'pattern_id',
+                    'logo_id',
+                    'photo_url',
+                    'other_req',
+                    'user_id',
+                    'wished_num',
+                    'sales_volume',
+                    'unit_price'
+                )[:post_num])
+        
+        return JsonResponse(most_wished_products, safe = False)
+
+class BestSellingProductView(View):
+    
+    def post(self, request):
+        post_num = int(request.GET.get('num', THUMBNAIL_DEFAULT_NUM))
+        
+        best_selling_list_req = json.loads(request.body)
+        best_selling_products = list(
+            DesignDescription.objects.filter(
+                main_type_id = best_selling_list_req["main_type"]
+                ).order_by("-sales_volume").values(
+                    'label', 
+                    'category_id',
+                    'main_type_id',
+                    'color',
+                    'pattern_id',
+                    'logo_id',
+                    'photo_url',
+                    'other_req',
+                    'user_id',
+                    'wished_num',
+                    'sales_volume',
+                    'unit_price'
+                )[:post_num])
+        
+        return JsonResponse(most_wished_products, safe = False)
