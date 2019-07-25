@@ -61,7 +61,6 @@ class UpdateView(View):
     def post(self, request):
         user = request.user
         login_user = json.loads(request.body)
-        print(login_user)
         
         if 'nickname' in login_user:
             User.objects.filter(id=user.id).update(nickname = login_user['nickname'])
@@ -155,20 +154,3 @@ class NaverLoginView(View):
                 'user_type'    : none_member_type,
                 'user_pk'      : new_user_info.id,
                 }, status = 200)
-
-class MypageView(View):
-    
-    @login_required
-    def get(self, request):
-        
-        user_mypage_info    = json.loads(request.body)
-        user_who_requested  = user_mypage_info["id"]
-        user_object         = User.objects.get(pk = user_who_requested)
-        requested_address = Address.objects.values().filter(pk = user_who_requested)
-
-
-        return JsonResponse({
-            'nickname' : user_who_requested["id"]["nickname"],
-            'reward_point' : user_who_requested["id"]["reward_point"],
-            "address_list" : list(requested_address)
-        }, status=200)
